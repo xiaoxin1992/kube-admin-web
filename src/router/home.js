@@ -1,3 +1,5 @@
+import {users} from "./users.js";
+
 const home = {
     path: '/',
     name: 'home',
@@ -8,7 +10,8 @@ const home = {
             path: '/index',
             name: 'index',
             component: () => import("../views/index.vue"),
-        }
+        },
+        users
     ]
 }
 

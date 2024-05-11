@@ -1,10 +1,10 @@
 <script setup>
-
-import {Grid, Location, SwitchButton, User} from "@element-plus/icons-vue";
 import {useRouter} from "vue-router";
 import {storeToRefs} from "pinia";
 import storage from "../utils/storage.js";
 import {userStore} from "../store/index.js";
+import Menu from "../components/Menu.vue";
+import {SwitchButton} from "@element-plus/icons-vue";
 
 const {username} = storeToRefs(userStore())
 
@@ -28,36 +28,14 @@ const logout = () =>{
         </el-col>
         <el-col :span="12">
           <div class="logout">
-            <span>{{username}}</span>&nbsp;<el-button text circle :icon="SwitchButton" @click="logout"></el-button>
+            <span>{{username}}</span>&nbsp;<el-button text circle @click="logout"><el-icon><SwitchButton /></el-icon></el-button>
           </div>
         </el-col>
       </el-row>
     </el-header>
     <el-container class="content">
       <el-aside width="200px">
-        <el-menu
-            default-active="index"
-            class="menu"
-        >
-          <el-menu-item index="index">
-            <el-icon><Grid /></el-icon>
-            <span>首页</span>
-          </el-menu-item>
-          <el-sub-menu index="2">
-            <template #title>
-              <el-icon><location /></el-icon>
-              <span>Navigator One</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="1-1">item one</el-menu-item>
-              <el-menu-item index="1-2">item two</el-menu-item>
-            </el-menu-item-group>
-          </el-sub-menu>
-          <el-menu-item index="3">
-            <el-icon><User /></el-icon>
-            <span>用户列表</span>
-          </el-menu-item>
-        </el-menu>
+        <Menu></Menu>
       </el-aside>
       <el-main>
         <router-view></router-view>
@@ -94,10 +72,7 @@ const logout = () =>{
     }
   }
   .content {
-    .menu {
-      width: 100%;
-      height: 100%;
-    }
+
   }
 }
 </style>
