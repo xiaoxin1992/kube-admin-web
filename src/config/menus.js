@@ -1,26 +1,19 @@
 export const menus = [
     {
-        "title": "首页",
+        "title": "大盘",
         "path": "/index",
         "icon": "Grid",
         "type": 1
     },
     {
-        "title": "用户",
+        "title": "用户管理",
         "path": "/user",
         "icon": "User",
         "type": 2,
         "children": [
             {
-                "title": "添加用户",
-                "path": "/user/add",
-                "icon": "User",
-                "type": 1
-            },
-            {
-                "title": "删除",
-                "path": "/user/delete",
-                "icon": "User",
+                "title": "用户列表",
+                "path": "/user/list",
                 "type": 1
             },
         ]

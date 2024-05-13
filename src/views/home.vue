@@ -5,6 +5,7 @@ import storage from "../utils/storage.js";
 import {userStore} from "../store/index.js";
 import Menu from "../components/Menu.vue";
 import {SwitchButton} from "@element-plus/icons-vue";
+import { ArrowRight } from '@element-plus/icons-vue'
 
 const {username} = storeToRefs(userStore())
 
@@ -38,6 +39,13 @@ const logout = () =>{
         <Menu></Menu>
       </el-aside>
       <el-main>
+        <div class="breadcrumb">
+          <el-breadcrumb :separator-icon="ArrowRight">
+            <el-breadcrumb-item :to="item.path" v-for="(item, index) in $route.matched" :key="index">
+              {{item.meta.title}}
+            </el-breadcrumb-item>
+          </el-breadcrumb>
+        </div>
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -72,7 +80,9 @@ const logout = () =>{
     }
   }
   .content {
-
+    .breadcrumb {
+      margin-bottom: 20px;
+    }
   }
 }
 </style>
