@@ -1,5 +1,6 @@
 <script setup>
 import Table from "../../components/Table.vue";
+import {ref} from "vue";
 const columns = ref([
     {
       prop: "username",
