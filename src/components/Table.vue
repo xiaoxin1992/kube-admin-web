@@ -23,7 +23,15 @@
     <slot name="ext"></slot>
   </el-form>
   <el-table :data="props.data" :size="'default'">
-    <el-table-column align="center" v-for="column in props.columns" :key="column.prop" :prop="column.prop" :label="column.label" :formatter="column.formatter" :width="column.width"></el-table-column>
+    <el-table-column fixed align="center" v-for="column in props.columns" :key="column.prop" :prop="column.prop" :label="column.label" :formatter="column.formatter" :width="column.width"></el-table-column>
+    <el-table-column fixed="right" label="操作" width="120">
+      <template #default>
+        <el-button link type="primary" size="small" @click="handleClick">
+          修改
+        </el-button>
+        <el-button link type="danger" size="small">删除</el-button>
+      </template>
+    </el-table-column>
   </el-table>
   <div class="pagination">
     <el-pagination background layout="prev, pager, next" prev-text="上一页"	next-text="下一页" :total="20" />
