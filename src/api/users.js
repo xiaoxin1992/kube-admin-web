@@ -8,7 +8,7 @@ const createUser = async (data) => {
     })
 }
 
-const getUserList =async (param) => {
+const getUserList = async (param) => {
     const url = `/user/list?size=${param.size}&page=${param.page}&query=${param.query}`
     return await request({
         method: "get",
@@ -16,5 +16,20 @@ const getUserList =async (param) => {
     })
 }
 
+const changeUserPassword = async (data) => {
+    return await request({
+        method: "post",
+        url: "/user/reset_password",
+        data
+    })
+}
 
-export {createUser, getUserList}
+const dropUser = async (data) => {
+    return await request({
+        method: "post",
+        url: "/user/delete",
+        data
+    })
+}
+
+export {createUser, getUserList, changeUserPassword, dropUser}

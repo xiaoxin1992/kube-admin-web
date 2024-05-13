@@ -32,13 +32,13 @@ service.interceptors.request.use((req) => {
 // 响应拦截
 
 service.interceptors.response.use(res => {
-    const {code, data, message} = res.data
+    const {code, message} = res.data
     if (res.status === 401 || code === 401) {
         ElMessage.error(TOKEN_INVALID)
         router.push({"name": "login"})
         return Promise.reject(TOKEN_INVALID)
     } else if (res.status !== 200 || code === 200) {
-        return data
+        return res.data
     } else {
         ElMessage.error(message || NETWORK_ERROR)
         return Promise.reject(message || NETWORK_ERROR)
