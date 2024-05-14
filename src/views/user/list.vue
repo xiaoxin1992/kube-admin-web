@@ -83,9 +83,37 @@ const userInfo = reactive({
   email: "",
   phone: ""
 })
+const useraddRule = reactive({
+  "username": [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+  ],
+  "password": [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+  ],
+  "display_name": [
+    { required: true, message: '请输入名称', trigger: 'blur' },
+  ],
+  "role": [
+    { required: true, message: '请选择类型', trigger: 'blur' },
+  ],
+  "email": [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+  ],
+  "phone": [
+    { required: true, message: '请输入手机号码', trigger: 'blur' },
+  ],
+})
 const resetPassword = reactive({
   username: "",
   password: ""
+})
+const resetPasswordRule = reactive({
+  "username": [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+  ],
+  "password": [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+  ],
 })
 let userinfoRef = ref()
 let resetPasswordRef = ref()
@@ -117,17 +145,25 @@ const resetFields = () => {
 
 const submit = () => {
   if (opt.value) {
-    createUser(userInfo).then(response => {
-      ElMessage.success(response.message)
-      if (response.code === 200) {
-        visible()
+    userinfoRef.value.validate((valid)=>{
+      if (valid) {
+        createUser(userInfo).then(response => {
+          ElMessage.success(response.message)
+          if (response.code === 200) {
+            visible()
+          }
+        })
       }
     })
   } else {
-    changeUserPassword(resetPassword).then(response => {
-      ElMessage.success(response.message)
-      if (response.code === 200) {
-        visible()
+    resetPasswordRef.value.validate((valid)=>{
+      if (valid) {
+        changeUserPassword(resetPassword).then(response => {
+          ElMessage.success(response.message)
+          if (response.code === 200) {
+            visible()
+          }
+        })
       }
     })
   }
@@ -149,7 +185,7 @@ const deleteUser = (row) => {
   <div>
     <el-dialog title="用户信息" :center="true" v-model="show" width="45%" @closed="resetFields()">
       <div class="form" v-if="opt">
-        <el-form :inline="true" size="default" ref="userinfoRef" :model="userInfo">
+        <el-form :inline="true" size="default" ref="userinfoRef" :model="userInfo" :rules="useraddRule">
           <el-form-item label="用户名" style="width: 250px" prop="username">
             <el-input :prefix-icon="User" v-model="userInfo.username" clearable placeholder="请输入用户名"></el-input>
           </el-form-item>
@@ -173,7 +209,7 @@ const deleteUser = (row) => {
         </el-form>
       </div>
       <div class="form" v-else>
-        <el-form :inline="true" size="default" ref="resetPasswordRef" :model="resetPassword">
+        <el-form :inline="true" size="default" ref="resetPasswordRef" :model="resetPassword" :rules="resetPasswordRule">
           <el-form-item label="用户名" style="width: 250px" prop="username">
             <el-input :disabled="true" :prefix-icon="User" v-model="resetPassword.username" clearable
                       placeholder="请输入用户名"></el-input>

@@ -23,7 +23,7 @@ service.interceptors.request.use((req) => {
     if (!headers.Authorization) {
         let us = storage.getItem("users")
         if (us !== undefined) {
-            headers.Authorization = us.token
+            headers.Authorization = us.data.token
         }
     }
     return req;
