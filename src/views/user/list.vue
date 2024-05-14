@@ -85,22 +85,22 @@ const userInfo = reactive({
 })
 const useraddRule = reactive({
   "username": [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
+    {required: true, message: '请输入用户名', trigger: 'blur'},
   ],
   "password": [
-    { required: true, message: '请输入密码', trigger: 'blur' },
+    {required: true, message: '请输入密码', trigger: 'blur'},
   ],
   "display_name": [
-    { required: true, message: '请输入名称', trigger: 'blur' },
+    {required: true, message: '请输入名称', trigger: 'blur'},
   ],
   "role": [
-    { required: true, message: '请选择类型', trigger: 'blur' },
+    {required: true, message: '请选择类型', trigger: 'blur'},
   ],
   "email": [
-    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    {required: true, message: '请输入邮箱', trigger: 'blur'},
   ],
   "phone": [
-    { required: true, message: '请输入手机号码', trigger: 'blur' },
+    {required: true, message: '请输入手机号码', trigger: 'blur'},
   ],
 })
 const resetPassword = reactive({
@@ -109,10 +109,10 @@ const resetPassword = reactive({
 })
 const resetPasswordRule = reactive({
   "username": [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
+    {required: true, message: '请输入用户名', trigger: 'blur'},
   ],
   "password": [
-    { required: true, message: '请输入密码', trigger: 'blur' },
+    {required: true, message: '请输入密码', trigger: 'blur'},
   ],
 })
 let userinfoRef = ref()
@@ -145,7 +145,7 @@ const resetFields = () => {
 
 const submit = () => {
   if (opt.value) {
-    userinfoRef.value.validate((valid)=>{
+    userinfoRef.value.validate((valid) => {
       if (valid) {
         createUser(userInfo).then(response => {
           ElMessage.success(response.message)
@@ -156,7 +156,7 @@ const submit = () => {
       }
     })
   } else {
-    resetPasswordRef.value.validate((valid)=>{
+    resetPasswordRef.value.validate((valid) => {
       if (valid) {
         changeUserPassword(resetPassword).then(response => {
           ElMessage.success(response.message)
