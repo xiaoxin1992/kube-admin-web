@@ -1,6 +1,6 @@
 <script setup>
 
-import {User, Grid, Setting, Monitor, GobletSquareFull} from "@element-plus/icons-vue";
+import {User, Grid, Setting, Monitor, GobletSquareFull, Histogram} from "@element-plus/icons-vue";
 
 const props = defineProps({
   name: {
@@ -19,6 +19,7 @@ const props = defineProps({
     <Setting v-if="props.name==='Setting'" />
     <Monitor v-if="props.name==='Monitor'" />
     <GobletSquareFull v-if="props.name==='GobletSquareFull'" />
+    <Histogram v-if="props.name==='Histogram'" />
   </el-icon>
 </template>
 

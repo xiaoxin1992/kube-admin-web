@@ -1,15 +1,14 @@
-export const users =       {
-    path: 'user',
+export const users = {
+    path: 'user/list',
     name: 'user',
     meta: {
         title: "用户管理"
     },
-    redirect: "list",
-    component: () => import("../views/user/list.vue"),
+    redirect: {name: "userList"},
     children: [
         {
             path: 'list',
-            name: 'list',
+            name: 'userList',
             meta: {
                 title: "用户列表"
             },

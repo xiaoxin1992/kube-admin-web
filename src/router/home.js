@@ -1,4 +1,5 @@
 import {users} from "./users.js";
+import {cluster} from "./cluster.js";
 
 const home = {
     path: '/',
@@ -17,7 +18,8 @@ const home = {
             },
             component: () => import("../views/index.vue"),
         },
-        users
+        users,
+        cluster
     ]
 }
 

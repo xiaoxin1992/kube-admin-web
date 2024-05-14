@@ -9,6 +9,12 @@
       type: Object,
       required: true
     },
+    config: {
+      type: Object,
+      default: {
+        search: true
+      }
+    }
   })
   const pagination = reactive({
     page: 1,
@@ -26,11 +32,11 @@
 
 <template>
   <el-form :inline="true" :size="'default'" @submit.native.prevent>
-    <el-form-item>
+    <el-form-item v-if="props.config.search">
       <el-input size="default" type="text" :prefix-icon="Search"
                 :placeholder="props.pagination.placeholder" v-model="pagination.query"></el-input>
     </el-form-item>
-    <el-form-item>
+    <el-form-item v-if="props.config.search">
       <el-button size="default" plain @click="getList()">
         <el-icon>
           <search/>
