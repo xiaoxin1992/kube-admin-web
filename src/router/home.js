@@ -1,5 +1,7 @@
 import {users} from "./users.js";
 import {cluster} from "./cluster.js";
+import podList from "./pods.js";
+import deployment from "./deployment.js";
 
 const home = {
     path: '/',
@@ -19,7 +21,9 @@ const home = {
             component: () => import("../views/index.vue"),
         },
         users,
-        cluster
+        cluster,
+        podList,
+        deployment
     ]
 }
 

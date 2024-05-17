@@ -9,11 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@codemirror/language": "^6.10.1",
+    "@codemirror/legacy-modes": "^6.4.0",
     "@element-plus/icons-vue": "^2.3.1",
     "axios": "^1.6.8",
+    "codemirror": "^6.0.1",
     "element-plus": "^2.7.2",
+    "js-yaml": "^4.1.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
+    "vue-codemirror": "^6.1.1",
     "vue-router": "^4.3.2"
   },
   "devDependencies": {

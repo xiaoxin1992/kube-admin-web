@@ -29,6 +29,37 @@ export const menus = [
         ]
     },
     {
+        "title": "Pod管理",
+        "path": "/pods",
+        "icon": "TrendCharts",
+        "type": 2,
+        "children": [
+            {
+                "title": "pod列表",
+                "path": "/pods/list",
+                "type": 1
+            },
+        ]
+    },
+    {
+        "title": "deployment管理",
+        "path": "/deployment",
+        "icon": "SetUp",
+        "type": 2,
+        "children": [
+            {
+                "title": "deployment列表",
+                "path": "/deployment/list",
+                "type": 1
+            },
+            {
+                "title": "deployment创建",
+                "path": "/deployment/create",
+                "type": 1
+            },
+        ]
+    },
+    {
         "title": "用户管理",
         "path": "/user",
         "icon": "User",

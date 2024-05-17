@@ -51,7 +51,12 @@ service.interceptors.response.use(res => {
         ElMessage.error(TOKEN_INVALID)
         router.push({"name": "login"})
     } else {
-        ElMessage.error(error.response.data.message)
+        if (error.response.data.message === undefined) {
+            ElMessage.error(NETWORK_ERROR)
+        } else {
+            ElMessage.error(error.response.data.message)
+        }
+
     }
     return Promise.reject(error);
 })
