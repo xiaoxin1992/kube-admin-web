@@ -19,7 +19,7 @@ const inputChange = () => {
   emits('update:data', Number(inputData.value) ? Number(inputData.value) : inputData.value);
 }
 onMounted(()=>{
-  if (props.data === "" || props.data == null) {
+  if (props.data === "" || props.data == null || props.data === undefined) {
     inputData.value = '';
   }else{
     inputData.value = props.data

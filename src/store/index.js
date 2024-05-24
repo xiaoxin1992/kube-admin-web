@@ -41,6 +41,8 @@ export const useItem = defineStore('item', {
                             annotations: {}
                         },
                         spec: {
+                            initContainers:[],
+                            containers : [],
                             //存储配置:
                             volumes: [],
                             nodeSelector: {},

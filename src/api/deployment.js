@@ -9,6 +9,14 @@ export const getDeploymentList = async (param) => {
     })
 }
 
+export const getDeploymentDetail = async (param) => {
+    const url = `/deployment/detail?zone=${param.cluster}&namespace=${param.namespace}&name=${param.name}`
+    return await request({
+        method: "get",
+        url: url,
+    })
+}
+
 export const deleteDeployment = async (data) => {
     return await request({
         method: "post",

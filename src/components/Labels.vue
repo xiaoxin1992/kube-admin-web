@@ -34,6 +34,7 @@ const addTableRow = () => {
 const deleteTableRow = (index) => {
   props.list.splice(index, 1)
 }
+
 </script>
 
 <template>

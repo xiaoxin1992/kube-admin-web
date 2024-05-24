@@ -1,16 +1,18 @@
 <script setup>
 
-import {computed, reactive, ref, toRefs} from "vue";
+import {computed, onBeforeMount, reactive, ref, toRefs} from "vue";
 import CNFrame from "./CNFrame.vue";
 import {getSecrets} from "../api/secret.js";
 import CNInput from "./CNInput.vue";
 import Labels from "./Labels.vue";
-import {list2Object} from "../utils/tools.js";
+import {list2Object, object2List} from "../utils/tools.js";
 
 import {useItem} from "../store/index.js";
-import {storeToRefs}  from  'pinia'
+import {storeToRefs} from 'pinia'
 import SchedulerConfig from "./scheduler/schedulerConfig.vue";
 import Volume from "./scheduler/Volume.vue";
+import Container from "./scheduler/container/Container.vue";
+import {createDeployment} from "../api/deployment.js";
 
 const props = defineProps({
   resourceType: {
@@ -22,6 +24,8 @@ const props = defineProps({
     default: "Create"
   }
 })
+
+const emits = defineEmits(['submit'])
 
 const labelActiveName = ref("controlAnnot")
 
@@ -46,10 +50,15 @@ const formConfig = reactive({
 const itemRef = ref()
 const activeName = ref("basic")
 const clusterNamespace = (obj) => {
-  formConfig.cluster = obj.cluster
-  formConfig.namespace = obj.namespace
-  useItemer.cluster = obj.cluster
-  useItemer.namespace = obj.namespace
+  if (obj === undefined) {
+    formConfig.cluster = useItemer.cluster
+    formConfig.namespace = useItemer.namespace
+  }else{
+    formConfig.cluster = obj.cluster
+    formConfig.namespace = obj.namespace
+    useItemer.cluster = obj.cluster
+    useItemer.namespace = obj.namespace
+  }
   getImagePullSecrets()
 }
 const getImagePullSecrets = () => {
@@ -95,10 +104,13 @@ const strategyChange = (value) => {
     }
   }
 }
-const makeYaml = () => {
-
+// const makeYaml = () => {
+//
+// }
+const submitHandler = (tag) => {
+  emits('submit', tag)
 }
-const submit = () => {
+const submit = (tag) => {
   // list转换层obj
   let labelObj = {}
   if (formConfig.autoCreateLabel) {
@@ -120,11 +132,23 @@ const submit = () => {
   if (options.value.nodeSelectorList.length !== 0) {
     useItemer.item.spec.template.spec.nodeSelector = list2Object(options.value.nodeSelectorList)
   }
-  console.log(useItemer.item)
+  // console.log(useItemer.item)
+  submitHandler(tag)
 }
 const useItemer = useItem()
 const {options} = toRefs(formConfig)
 const {item} = storeToRefs(useItem())
+const isEdit = () => {
+  if (!formConfig.autoCreateLabel) {
+    options.value.controlLabelList = object2List(useItemer.item.metadata.labels)
+    options.value.podLabelList = object2List(useItemer.item.spec.selector.matchLabels)
+    options.value.controlAnnotList = object2List(useItemer.item.metadata.annotations)
+    options.value.controlAnnotList = object2List(useItemer.item.metadata.annotations)
+    options.value.podAnnotList = object2List(useItemer.item.spec.template.metadata.annotations)
+    options.value.nodeSelectorList = object2List(useItemer.item.spec.template.spec.nodeSelector)
+
+  }
+}
 </script>
 
 <template>
@@ -137,7 +161,7 @@ const {item} = storeToRefs(useItem())
         <el-card style="max-width: 100%" shadow="never">
           <template #header>
             <div>
-              <CNFrame @change="clusterNamespace"/>
+              <CNFrame @change="clusterNamespace"  :cluster-readonly="props.method === 'update'" :namespaces-readonly="props.method === 'update'"/>
             </div>
           </template>
           <el-row :gutter="20">
@@ -215,7 +239,7 @@ const {item} = storeToRefs(useItem())
             <el-col :span="12">
               <!--标签配置-->
               <el-form-item label="标签以注释">
-                <el-radio-group v-model="formConfig.autoCreateLabel">
+                <el-radio-group v-model="formConfig.autoCreateLabel" @change="isEdit">
                   <el-radio :value="true" size="default">自动生成</el-radio>
                   <el-radio :value="false" size="default">手动配置</el-radio>
                 </el-radio-group>
@@ -223,7 +247,7 @@ const {item} = storeToRefs(useItem())
             </el-col>
             <el-col :span="12">
               <!--自动添加service-->
-              <el-form-item label="自动添加service">
+              <el-form-item v-if="false" label="自动添加service">
                 <el-switch v-model="formConfig.autoCreateService"></el-switch>
               </el-form-item>
             </el-col>
@@ -247,16 +271,20 @@ const {item} = storeToRefs(useItem())
         </el-card>
       </el-tab-pane>
       <el-tab-pane label="调度配置" name="affinity">
-        <schedulerConfig :list="options.nodeSelectorList" />
-      </el-tab-pane >
+        <schedulerConfig :list="options.nodeSelectorList"/>
+      </el-tab-pane>
       <el-tab-pane label="存储卷配置" name="volume">
         <Volume></Volume>
       </el-tab-pane>
-      <el-tab-pane label="容器配置" name="container">Role</el-tab-pane>
-      <el-tab-pane label="初始化容器" name="int-container">Task</el-tab-pane>
+      <el-tab-pane label="容器配置" name="container">
+        <Container></Container>
+      </el-tab-pane>
+      <el-tab-pane label="初始化容器" name="int-container">
+        <Container container-type="init"></Container>
+      </el-tab-pane>
       <div style="display: flex; justify-content: center;margin-top: 20px">
         <el-form-item>
-          <el-button plain @click="makeYaml">生成Yaml</el-button>
+          <el-button plain @click="submit('yaml')">生成Yaml</el-button>
           <el-button type="primary" @click="submit" plain>
             {{ props.method === "Create" ? "创建" : "更新" }}
           </el-button>

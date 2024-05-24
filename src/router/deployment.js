@@ -20,6 +20,14 @@ const podList = {
                 title: "deployment创建"
             },
             component: () => import("../views/deployment/create.vue"),
+        },
+        {
+            path: '/deployment/edit',
+            name: 'deploymentEdit',
+            meta: {
+                title: "deployment编辑"
+            },
+            component: () => import("../views/deployment/edit.vue"),
         }
     ]
 }

@@ -13,7 +13,7 @@ export const obj2Yaml = (obj) => {
 
 export const object2List = (obj) => {
     let list = []
-    if (obj === null) {
+    if (obj === null || obj === undefined) {
         return list
     }
     for (let [key, value] of Object.entries(obj)) {

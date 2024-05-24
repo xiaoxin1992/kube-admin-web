@@ -7,6 +7,9 @@ import CodeMirror from "../../components/CodeMirror.vue";
 import {obj2Yaml} from "../../utils/tools.js";
 import {deleteDeployment, getDeploymentList} from "../../api/deployment.js";
 import {Minus, Plus} from "@element-plus/icons-vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
 const codeConfig = reactive({
   show: false,
   data: ""
@@ -74,6 +77,18 @@ const flushPodList = () => {
 const clearData = () => {
   params.list = []
 }
+const editItem = (name) => {
+  // 编辑
+  router.push({
+    path: '/deployment/edit',
+    query: {
+      cluster: params.cluster,
+      namespace: params.namespace,
+      name: name
+    }
+  })
+
+}
 const deleteConfirm = (row) => {
   deleteDeployment({zone: params.cluster, namespace: params.namespace, name: row.metadata.name}).then(response => {
     const {message} = response
@@ -113,26 +128,33 @@ const relicChange = (row) => {
     <template #table-ext>
       <el-table-column align="center" label="副本数量">
         <template #default="scope">
-          <el-input-number @change="relicChange(scope.row)" :controls="false" controls-position="right" v-model="scope.row.spec.replicas" size="small" :min="0" :max="100" type="number"></el-input-number>
+          <el-input-number @change="relicChange(scope.row)" :controls="false" controls-position="right"
+                           v-model="scope.row.spec.replicas" size="small" :min="0" :max="100"
+                           type="number"></el-input-number>
         </template>
       </el-table-column>
       <el-table-column align="center" label="暂停更新">
         <template #default="scope">
-          <el-switch inline-prompt  size="default" active-text="是" inactive-text="否" v-model="scope.row.spec.paused" style="--el-switch-on-color: #ff4949; --el-switch-off-color: #13ce66"></el-switch>
+          <el-switch inline-prompt size="default" active-text="是" inactive-text="否" v-model="scope.row.spec.paused"
+                     style="--el-switch-on-color: #ff4949; --el-switch-off-color: #13ce66"></el-switch>
         </template>
       </el-table-column>
       <el-table-column align="center" fixed="right" label="操作" width="200">
         <template #default="scope">
-          <el-button link type="primary" @click="detail(scope.row)">编辑</el-button>
+          <el-button link type="primary" @click="detail(scope.row)">查看</el-button>
           <el-button link type="primary" @click="detail(scope.row)">复制</el-button>
-          <el-button link type="primary" @click="detail(scope.row)">更多</el-button>
+          <el-button link type="primary" :disabled="scope.row.metadata.deletionTimestamp !==undefined"
+                     @click="editItem(scope.row.metadata.name)">编辑
+          </el-button>
           <el-popconfirm
               confirm-button-text="确认"
               cancel-button-text="取消"
               title="是否删除"
               @confirm="deleteConfirm(scope.row)">
             <template #reference>
-              <el-button :disabled="scope.row.metadata.deletionTimestamp !==undefined"  link type="danger" size="small">删除</el-button>
+              <el-button :disabled="scope.row.metadata.deletionTimestamp !==undefined" link type="danger" size="small">
+                删除
+              </el-button>
             </template>
           </el-popconfirm>
         </template>
